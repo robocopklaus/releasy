@@ -1,0 +1,78 @@
+name: Code Quality Assurance
+
+on:
+  pull_request:
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  detect_changes:
+    name: Detect Changes in Source Files
+    runs-on: ubuntu-latest
+
+    outputs:
+      js: ${{ steps.filter.outputs.js }}
+      ts: ${{ steps.filter.outputs.ts }}
+      dependencies: ${{ steps.filter.outputs.dependencies }}
+      changed: ${{ steps.filter.outputs.changed }}
+
+      js_files: ${{ steps.filter.outputs.js_files }}
+      ts_files: ${{ steps.filter.outputs.ts_files }}
+      changed_files: ${{ steps.filter.outputs.changed_files }}
+
+    steps:
+      - name: Identify Changed Files
+        uses: dorny/paths-filter@v3
+        id: filter
+        with:
+          filters: |
+            ts:
+              - added|modified: '**/*.ts'
+            js:
+              - added|modified: '**/*.js'
+              - added|modified: '**/*.cjs'
+              - added|modified: '**/*.mjs'
+            dependencies:
+              - added|modified: 'package.json'
+              - added|modified: 'composer.json'
+              - added|modified: 'package-lock.json'
+              - added|modified: 'composer.lock'
+            changed:
+              - added|modified: '**/*'
+          list-files: shell
+
+  lint_code:
+    name: Perform Code Linting
+    needs: detect_changes
+    if: ${{ needs.detect_changes.outputs.changed == 'true' }}
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref }}
+
+      - name: Setup Node.js Environment
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22.12.0
+
+      - name: Install Node.js Dependencies
+        run: npm ci --prefer-offline
+
+      - name: Check Code Formatting
+        run: npm run format:check ${{ needs.detect_changes.outputs.changed_files }}
+
+      - name: Lint TypeScript Files
+        if: ${{ needs.detect_changes.outputs.ts == 'true' || needs.detect_changes.outputs.dependencies == 'true' }}
+        run: npm run lint ${{ needs.detect_changes.outputs.ts_files || '**/*.ts' }}
+
+      - name: Lint JavaScript Files
+        if: ${{ needs.detect_changes.outputs.js == 'true' || needs.detect_changes.outputs.dependencies == 'true' }}
+        run: npm run lint ${{ needs.detect_changes.outputs.js_files || '*.js' }}
+
+      - name: Build Project
+        run: npm run build

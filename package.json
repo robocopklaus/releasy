@@ -1,0 +1,35 @@
+{
+  "name": "releasy",
+  "description": "A simple release tool",
+  "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
+  "volta": {
+    "node": "22.12.0"
+  },
+  "exports": "./dist/index.mjs",
+  "scripts": {
+    "build": "pkgroll",
+    "type-check": "tsc --noEmit",
+    "lint": "eslint --max-warnings 0",
+    "start": "tsx ./src/index.ts",
+    "format:check": "prettier --check --ignore-unknown"
+  },
+  "dependencies": {
+    "@actions/core": "1.11.1"
+  },
+  "devDependencies": {
+    "@eslint/js": "9.17.0",
+    "@types/node": "22.10.2",
+    "eslint": "9.17.0",
+    "eslint-config-love": "112.0.0",
+    "eslint-plugin-prefer-arrow-functions": "3.4.1",
+    "eslint-plugin-simple-import-sort": "12.1.1",
+    "pkgroll": "2.5.1",
+    "prettier": "3.4.2",
+    "tsx": "4.19.2",
+    "typescript": "5.7.2",
+    "typescript-eslint": "8.18.0"
+  }
+}
