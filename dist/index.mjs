@@ -1,3 +1,11 @@
-import core from '@actions/core'
+import core from '@actions/core';
 
-core.info('Hello, world!')
+const run = () => {
+  try {
+    core.info("Hello, world!");
+  } catch (error) {
+    if (error instanceof Error) core.setFailed(error.message);
+  }
+};
+
+run();

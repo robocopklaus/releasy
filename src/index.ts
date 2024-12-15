@@ -1,3 +1,3 @@
-import core from '@actions/core'
+import { run } from './main'
 
-core.info('Hello, world!')
+run()
