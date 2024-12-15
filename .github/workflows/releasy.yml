@@ -15,5 +15,16 @@ jobs:
         id: checkout
         uses: actions/checkout@v4
 
+      - name: Setup Node.js Environment
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22.12.0
+
+      - name: Install Node.js Dependencies
+        run: npm ci --prefer-offline
+
+      - name: Build Project
+        run: npm run build
+
       - name: Run Local Action
         uses: ./
