@@ -1,0 +1,19 @@
+name: Releasy
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  releasy:
+    name: Releasy
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        id: checkout
+        uses: actions/checkout@v4
+
+      - name: Run Local Action
+        uses: ./

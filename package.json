@@ -10,6 +10,7 @@
   },
   "exports": "./dist/index.mjs",
   "scripts": {
+    "prepare": "husky",
     "build": "pkgroll",
     "type-check": "tsc --noEmit",
     "lint": "eslint --max-warnings 0",
@@ -20,12 +21,17 @@
     "@actions/core": "1.11.1"
   },
   "devDependencies": {
+    "@commitlint/cli": "19.6.1",
+    "@commitlint/config-conventional": "19.6.0",
     "@eslint/js": "9.17.0",
     "@types/node": "22.10.2",
     "eslint": "9.17.0",
     "eslint-config-love": "112.0.0",
     "eslint-plugin-prefer-arrow-functions": "3.4.1",
     "eslint-plugin-simple-import-sort": "12.1.1",
+    "husky": "9.1.7",
+    "lint-staged": "15.2.11",
+    "package-changed": "3.0.0",
     "pkgroll": "2.5.1",
     "prettier": "3.4.2",
     "tsx": "4.19.2",
