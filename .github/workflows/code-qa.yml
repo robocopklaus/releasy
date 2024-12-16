@@ -75,4 +75,4 @@ jobs:
         run: npm run lint ${{ needs.detect_changes.outputs.js_files || '*.js' }}
 
       - name: Build Project
-        run: npm run build
+        run: npm run package
