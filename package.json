@@ -8,14 +8,15 @@
   "volta": {
     "node": "22.12.0"
   },
-  "exports": "./dist/index.mjs",
+  "exports": "./dist/index.js",
   "scripts": {
     "prepare": "husky",
-    "build": "pkgroll",
     "type-check": "tsc --noEmit",
-    "lint": "eslint --max-warnings 0",
-    "start": "tsx ./src/index.ts",
-    "format:check": "prettier --check --ignore-unknown"
+    "lint": "eslint --max-warnings 0 --ignore-pattern dist/ --no-warn-ignored",
+    "local-action": "npx local-action . src/main.ts .env",
+    "package": "npx ncc build src/index.ts -o dist --source-map --license licenses.txt",
+    "format:check": "prettier --check --ignore-unknown",
+    "format:write": "npx prettier --write --ignore-unknown"
   },
   "dependencies": {
     "@actions/core": "1.11.1"
@@ -24,7 +25,9 @@
     "@commitlint/cli": "19.6.1",
     "@commitlint/config-conventional": "19.6.0",
     "@eslint/js": "9.17.0",
+    "@github/local-action": "2.2.1",
     "@types/node": "22.10.2",
+    "@vercel/ncc": "0.38.3",
     "eslint": "9.17.0",
     "eslint-config-love": "112.0.0",
     "eslint-plugin-prefer-arrow-functions": "3.4.1",
@@ -32,7 +35,6 @@
     "husky": "9.1.7",
     "lint-staged": "15.2.11",
     "package-changed": "3.0.0",
-    "pkgroll": "2.5.1",
     "prettier": "3.4.2",
     "tsx": "4.19.2",
     "typescript": "5.7.2",

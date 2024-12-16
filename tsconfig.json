@@ -1,4 +1,5 @@
 {
+  "$schema": "https://json.schemastore.org/tsconfig",
   "compilerOptions": {
     "strict": true,
 
@@ -12,7 +13,7 @@
     "resolveJsonModule": true,
 
     // Allow JS files to be imported from TS and vice versa
-    "allowJs": true,
+    "allowJs": false,
 
     // Use correct ESM import behavior
     "esModuleInterop": true,
