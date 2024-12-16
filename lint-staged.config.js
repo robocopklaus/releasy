@@ -9,7 +9,10 @@ const config = {
   // For JavaScript files:
   // 1. Lint and fix JavaScript code using ESLint with the same settings as TypeScript (no warnings, caching enabled).
   // 2. Format JavaScript files with Prettier after linting to ensure consistent style.
-  '**/*.{js,mjs,cjs}': ['eslint --max-warnings 0 --fix', 'prettier --write'],
+  '**/*.{js,mjs,cjs}': [
+    'eslint --max-warnings 0 --fix --ignore-pattern dist/ --no-warn-ignored',
+    'prettier --write'
+  ],
 
   // For all other file types (excluding CSS, TypeScript, and JavaScript):
   // Format using Prettier, but ignore unsupported or unknown file types.
