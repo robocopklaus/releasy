@@ -12,7 +12,7 @@
   "scripts": {
     "prepare": "husky",
     "type-check": "tsc --noEmit",
-    "lint": "eslint --max-warnings 0",
+    "lint": "eslint --max-warnings 0 --ignore-pattern dist/ --no-warn-ignored",
     "local-action": "npx local-action . src/main.ts .env",
     "package": "npx ncc build src/index.ts -o dist --source-map --license licenses.txt",
     "format:check": "prettier --check --ignore-unknown",
