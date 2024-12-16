@@ -20,5 +20,11 @@ jobs:
         with:
           node-version: 22.12.0
 
+      - name: Install Node.js Dependencies
+        run: npm ci --prefer-offline
+
+      - name: Build
+        run: npm run package
+
       - name: Run Local Action
         uses: ./
