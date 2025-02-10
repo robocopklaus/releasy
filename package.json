@@ -28,7 +28,7 @@
     "@github/local-action": "2.5.1",
     "@types/node": "22.13.0",
     "@vercel/ncc": "0.38.3",
-    "eslint": "9.19.0",
+    "eslint": "9.20.0",
     "eslint-config-love": "114.0.0",
     "eslint-plugin-prefer-arrow-functions": "3.6.2",
     "eslint-plugin-simple-import-sort": "12.1.1",
