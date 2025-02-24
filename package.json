@@ -25,7 +25,7 @@
     "@commitlint/cli": "19.7.1",
     "@commitlint/config-conventional": "19.7.1",
     "@eslint/js": "9.20.0",
-    "@github/local-action": "2.6.2",
+    "@github/local-action": "2.6.3",
     "@types/node": "22.13.0",
     "@vercel/ncc": "0.38.3",
     "eslint": "9.20.1",
