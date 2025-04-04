@@ -43,6 +43,12 @@ jobs:
           #   {{/each}}
 ```
 
+> **Important**: The default `GITHUB_TOKEN` has limited permissions and cannot create releases. You need to use a Personal Access Token (PAT) with the `repo` scope. To set this up:
+>
+> 1. Create a PAT at GitHub.com → Settings → Developer Settings → Personal Access Tokens → Tokens (classic)
+> 2. Select the `repo` scope (and `workflow` if using GitHub Actions)
+> 3. Add the token to your repository secrets or environment variables as `GITHUB_TOKEN`
+
 ## Inputs
 
 | Input                    | Description                                                 | Required | Default        |

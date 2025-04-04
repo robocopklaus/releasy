@@ -28,6 +28,6 @@ jobs:
       - name: Run Semantic Release Draft
         uses: ./
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+          github_token: ${{ secrets.GH_TOKEN }}
           tag_prefix: v
           dry_run: false
