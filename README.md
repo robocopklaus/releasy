@@ -35,7 +35,6 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           tag_prefix: v
           # Optional inputs:
-          # commit_regex: '^(feat|fix|chore|docs|refactor|perf|test)(\(.+\))?:'
           # dry_run: false
           # release_notes_template: |
           #   ## Release {{version}}
@@ -46,13 +45,12 @@ jobs:
 
 ## Inputs
 
-| Input                    | Description                                                   | Required | Default                                                     |
-| ------------------------ | ------------------------------------------------------------- | -------- | ----------------------------------------------------------- |
-| `github_token`           | Token used for GitHub API authentication                      | Yes      | -                                                           |
-| `tag_prefix`             | The prefix for version tags                                   | No       | `v`                                                         |
-| `commit_regex`           | Custom regex pattern to identify and classify commit messages | No       | `^(feat\|fix\|chore\|docs\|refactor\|perf\|test)(\(.+\))?:` |
-| `dry_run`                | Simulate the process without creating or updating a release   | No       | `false`                                                     |
-| `release_notes_template` | Template to format the generated release notes                | No       | See action.yml                                              |
+| Input                    | Description                                                 | Required | Default        |
+| ------------------------ | ----------------------------------------------------------- | -------- | -------------- |
+| `github_token`           | Token used for GitHub API authentication                    | Yes      | -              |
+| `tag_prefix`             | The prefix for version tags                                 | No       | `v`            |
+| `dry_run`                | Simulate the process without creating or updating a release | No       | `false`        |
+| `release_notes_template` | Template to format the generated release notes              | No       | See action.yml |
 
 ## Outputs
 
