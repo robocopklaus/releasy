@@ -151,12 +151,26 @@ async function run(): Promise<void> {
     const { data: commits } = await octokit.rest.repos.listCommits({
       owner,
       repo,
-      sha: 'main',
-      since: latestTag.name
+      sha: 'main'
     });
 
+    // Get the latest release to find its commit SHA
+    const { data: latestReleases } = await octokit.rest.repos.listReleases({
+      owner,
+      repo,
+      per_page: 1
+    });
+
+    const latestRelease = latestReleases[0];
+    const latestReleaseSha = latestRelease?.target_commitish;
+
+    // Filter commits to only include those after the latest release
+    const newCommits = latestReleaseSha 
+      ? commits.filter(commit => commit.sha !== latestReleaseSha)
+      : commits;
+
     // Parse and categorize commits
-    const parsedCommits: Commit[] = commits
+    const parsedCommits: Commit[] = newCommits
       .map(commit => {
         // Simple parsing based on conventional commits format
         const message = commit.commit.message;
