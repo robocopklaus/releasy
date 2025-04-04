@@ -47,7 +47,7 @@ async function run(): Promise<void> {
     if (!latestTag) {
       core.info(`No existing tags found. Starting from version ${initialVersion}`);
       const tagName = `${tagPrefix}${initialVersion}`;
-      const releaseName = `Release ${initialVersion}`;
+      const releaseName = initialVersion;
       
       // Get all commits for initial release
       const { data: commits } = await octokit.rest.repos.listCommits({

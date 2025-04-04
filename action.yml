@@ -25,7 +25,6 @@ inputs:
     description: "Template to format the generated release notes"
     required: false
     default: |
-      ## Release {{version}}
 
       ### Features
       {{#each features}}
