@@ -162,11 +162,24 @@ async function run(): Promise<void> {
     });
 
     const latestRelease = latestReleases[0];
-    const latestReleaseSha = latestRelease?.target_commitish;
+    
+    // Get all commits that were included in the latest release
+    let previousReleaseCommits: string[] = [];
+    if (latestRelease) {
+      // Get the commit history for the latest release
+      const { data: releaseCommits } = await octokit.rest.repos.listCommits({
+        owner,
+        repo,
+        sha: latestRelease.target_commitish
+      });
+      
+      // Extract commit SHAs
+      previousReleaseCommits = releaseCommits.map(commit => commit.sha);
+    }
 
-    // Filter commits to only include those after the latest release
-    const newCommits = latestReleaseSha 
-      ? commits.filter(commit => commit.sha !== latestReleaseSha)
+    // Filter commits to only include those not in the previous release
+    const newCommits = previousReleaseCommits.length > 0
+      ? commits.filter(commit => !previousReleaseCommits.includes(commit.sha))
       : commits;
 
     // Parse and categorize commits
