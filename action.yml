@@ -1,0 +1,48 @@
+name: "Releasy"
+description: "Automatically creates and updates draft releases based on conventional commits"
+author: "RobocopKlaus"
+
+inputs:
+  github_token:
+    description: "Token used for GitHub API authentication"
+    required: true
+  tag_prefix:
+    description: "The prefix for version tags"
+    required: false
+    default: "v"
+  dry_run:
+    description: "Simulate the process without creating or updating a release"
+    required: false
+    default: "false"
+  release_notes_template:
+    description: "Template to format the generated release notes"
+    required: false
+    default: |
+      ## Release {{version}}
+
+      ### Features
+      {{#each features}}
+      - {{this.message}}
+      {{/each}}
+
+      ### Fixes
+      {{#each fixes}}
+      - {{this.message}}
+      {{/each}}
+
+      ### Breaking Changes
+      {{#each breaking}}
+      - {{this.message}}
+      {{/each}}
+
+outputs:
+  new_version:
+    description: "The calculated new version"
+  release_url:
+    description: "URL of the created/updated release"
+  release_id:
+    description: "ID of the created/updated release"
+
+runs:
+  using: "node20"
+  main: "dist/index.js"
