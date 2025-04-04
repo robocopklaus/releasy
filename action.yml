@@ -2,6 +2,9 @@ name: "Releasy"
 description: "Automatically creates and updates draft releases based on conventional commits"
 author: "RobocopKlaus"
 
+permissions:
+  contents: write
+
 inputs:
   github_token:
     description: "Token used for GitHub API authentication"
