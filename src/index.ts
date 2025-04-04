@@ -22,7 +22,7 @@ async function run(): Promise<void> {
     const tagPrefix = core.getInput('tag_prefix') || 'v';
     const dryRun = core.getBooleanInput('dry_run');
     const releaseNotesTemplate = core.getInput('release_notes_template');
-    const initialVersion = core.getInput('initial_version') || '0.1.0';
+    const initialVersion = core.getInput('initial_version') || '1.0.0';
 
     const octokit = github.getOctokit(token);
     const { owner, repo } = github.context.repo;
