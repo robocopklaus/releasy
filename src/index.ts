@@ -44,7 +44,81 @@ async function run(): Promise<void> {
       .sort((a: Tag, b: Tag) => gt(a.version, b.version) ? -1 : 1)[0];
 
     if (!latestTag) {
-      core.setFailed('No valid semantic version tag found');
+      core.info('No existing tags found. Starting from version 0.1.0');
+      const initialVersion = '0.1.0';
+      const tagName = `${tagPrefix}${initialVersion}`;
+      const releaseName = `Release ${initialVersion}`;
+      
+      // Get all commits for initial release
+      const { data: commits } = await octokit.rest.repos.listCommits({
+        owner,
+        repo,
+        sha: 'main'
+      });
+
+      // Parse and categorize commits
+      const parsedCommits: Commit[] = commits
+        .map(commit => {
+          const message = commit.commit.message;
+          const match = message.match(/^(feat|fix|chore|docs|refactor|perf|test)(!?)(?:\(([^)]+)\))?: (.+)/);
+          
+          if (!match) {
+            return {
+              type: 'chore',
+              scope: null,
+              subject: message,
+              message: message,
+              breaking: false
+            };
+          }
+          
+          const [, type, isBreaking, scope, subject] = match;
+          const breaking = isBreaking === '!' || message.includes('BREAKING CHANGE:');
+          
+          return {
+            type,
+            scope: scope || null,
+            subject,
+            message,
+            breaking
+          };
+        });
+
+      // Categorize commits
+      const categorizedCommits = {
+        features: parsedCommits.filter(c => c.type === 'feat'),
+        fixes: parsedCommits.filter(c => c.type === 'fix'),
+        breaking: parsedCommits.filter(c => c.breaking)
+      };
+
+      // Generate release notes
+      const template = Handlebars.compile(releaseNotesTemplate);
+      const releaseNotes = template({
+        version: initialVersion,
+        ...categorizedCommits
+      });
+
+      if (dryRun) {
+        core.info('Dry run - would create initial release with:');
+        core.info(`Version: ${initialVersion}`);
+        core.info('Release notes:');
+        core.info(releaseNotes);
+        return;
+      }
+
+      // Create initial release
+      const { data: release } = await octokit.rest.repos.createRelease({
+        owner,
+        repo,
+        tag_name: tagName,
+        name: releaseName,
+        body: releaseNotes,
+        draft: true
+      });
+
+      core.setOutput('release_url', release.html_url);
+      core.setOutput('release_id', release.id.toString());
+      core.setOutput('new_version', initialVersion);
       return;
     }
 
