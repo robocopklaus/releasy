@@ -147,16 +147,27 @@ async function run(): Promise<void> {
       return;
     }
 
-    // Get commits since the latest tag
+    // Get the commit that the latest tag points to
+    const { data: tagData } = await octokit.rest.git.getRef({
+      owner,
+      repo,
+      ref: `tags/${latestTag.name}`
+    });
+
+    const latestTagSha = tagData.object.sha;
+
+    // Get all commits from the main branch
     const { data: commits } = await octokit.rest.repos.listCommits({
       owner,
       repo,
-      sha: 'main',
-      since: latestTag.name
+      sha: 'main'
     });
 
+    // Filter commits to only include those after the latest tag
+    const newCommits = commits.filter(commit => commit.sha !== latestTagSha);
+
     // Parse and categorize commits
-    const parsedCommits: Commit[] = commits
+    const parsedCommits: Commit[] = newCommits
       .map(commit => {
         // Simple parsing based on conventional commits format
         const message = commit.commit.message;
