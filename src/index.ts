@@ -106,18 +106,43 @@ async function run(): Promise<void> {
         return;
       }
 
-      // Create initial release
-      const { data: release } = await octokit.rest.repos.createRelease({
+      // Check if draft release already exists
+      const { data: releases } = await octokit.rest.repos.listReleases({
         owner,
-        repo,
-        tag_name: tagName,
-        name: releaseName,
-        body: releaseNotes,
-        draft: true
+        repo
       });
 
-      core.setOutput('release_url', release.html_url);
-      core.setOutput('release_id', release.id.toString());
+      const existingDraft = releases.find(r => r.draft && r.tag_name === tagName);
+
+      if (existingDraft) {
+        // Update existing draft
+        const { data: release } = await octokit.rest.repos.updateRelease({
+          owner,
+          repo,
+          release_id: existingDraft.id,
+          tag_name: tagName,
+          name: releaseName,
+          body: releaseNotes,
+          draft: true
+        });
+
+        core.setOutput('release_url', release.html_url);
+        core.setOutput('release_id', release.id.toString());
+      } else {
+        // Create initial release
+        const { data: release } = await octokit.rest.repos.createRelease({
+          owner,
+          repo,
+          tag_name: tagName,
+          name: releaseName,
+          body: releaseNotes,
+          draft: true
+        });
+
+        core.setOutput('release_url', release.html_url);
+        core.setOutput('release_id', release.id.toString());
+      }
+
       core.setOutput('new_version', initialVersion);
       return;
     }
