@@ -13,6 +13,10 @@ inputs:
     description: "The prefix for version tags"
     required: false
     default: "v"
+  initial_version:
+    description: "The version to use when no tags exist (default: 0.1.0)"
+    required: false
+    default: "0.1.0"
   dry_run:
     description: "Simulate the process without creating or updating a release"
     required: false

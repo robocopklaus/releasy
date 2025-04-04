@@ -22,6 +22,7 @@ async function run(): Promise<void> {
     const tagPrefix = core.getInput('tag_prefix') || 'v';
     const dryRun = core.getBooleanInput('dry_run');
     const releaseNotesTemplate = core.getInput('release_notes_template');
+    const initialVersion = core.getInput('initial_version') || '0.1.0';
 
     const octokit = github.getOctokit(token);
     const { owner, repo } = github.context.repo;
@@ -44,8 +45,7 @@ async function run(): Promise<void> {
       .sort((a: Tag, b: Tag) => gt(a.version, b.version) ? -1 : 1)[0];
 
     if (!latestTag) {
-      core.info('No existing tags found. Starting from version 0.1.0');
-      const initialVersion = '0.1.0';
+      core.info(`No existing tags found. Starting from version ${initialVersion}`);
       const tagName = `${tagPrefix}${initialVersion}`;
       const releaseName = `Release ${initialVersion}`;
       
